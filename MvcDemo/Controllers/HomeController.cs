@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace MvcDemo.Controllers
 {
@@ -10,7 +11,16 @@ namespace MvcDemo.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            //如果已登入
+            if (User.Identity.IsAuthenticated)
+            {
+                FormsIdentity id = (FormsIdentity)User.Identity;
+                FormsAuthenticationTicket ticket = id.Ticket;
+                ViewBag.UserName = ticket.UserData;
+                return View();
+            }
+            //導向
+            return RedirectToAction("Index", "Login");
         }
 
         public ActionResult About()
