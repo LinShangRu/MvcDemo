@@ -16,11 +16,35 @@ namespace MvcDemo.Controllers
         private 客戶聯絡人Repository db = RepositoryHelper.Get客戶聯絡人Repository();
 
         // GET: 客戶聯絡人
-        public ActionResult Index()
+        //public ActionResult Index()
+        //{
+        //    //var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料);
+        //    var 客戶聯絡人 = db.All().Include(客 => 客.客戶資料);
+        //    return View(客戶聯絡人.ToList());
+        //}
+
+        public ActionResult Index(string SortBy, string Keyword)
         {
-            //var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料);
-            var 客戶聯絡人 = db.All().Include(客 => 客.客戶資料);
-            return View(客戶聯絡人.ToList());
+            var MyResult = db.All().AsQueryable();
+            if (!String.IsNullOrEmpty(Keyword))
+            { MyResult = MyResult.Where(
+                m => m.姓名.Contains(Keyword) ||
+                m.職稱.Contains(Keyword) ||
+                m.Email.Contains(Keyword) ||
+                m.電話.Contains(Keyword) ||
+                m.手機.Contains(Keyword) ||
+                m.客戶資料.客戶名稱.Contains(Keyword)
+                ); }
+            if (String.IsNullOrEmpty(SortBy))
+                SortBy = "+Price";
+            if (SortBy.Equals("+Price"))
+                MyResult = MyResult.OrderBy(m => m.姓名);
+            else if (SortBy.Equals("-Price"))
+            {
+                MyResult = MyResult.OrderByDescending(m => m.姓名);
+            }
+            ViewBag.Keyword = Keyword;
+            return View(MyResult.Take(10));
         }
 
         // GET: 客戶聯絡人/Details/5
@@ -51,15 +75,22 @@ namespace MvcDemo.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,客戶Id,職稱,姓名,Email,手機,電話")] 客戶聯絡人 客戶聯絡人)
+        //public ActionResult Create([Bind(Include = "Id,客戶Id,職稱,姓名,Email,手機,電話")] 客戶聯絡人 客戶聯絡人)
+        public ActionResult Create(客戶聯絡人 客戶聯絡人)
         {
             if (ModelState.IsValid)
             {
                 //db.客戶聯絡人.Add(客戶聯絡人);
                 //db.SaveChanges();
-                db.Add(客戶聯絡人);
-                db.UnitOfWork.Commit();
-                return RedirectToAction("Index");
+
+
+                //方法一
+                //if (db.檢查同一個客戶下的聯絡人電子郵件不可重複(客戶聯絡人.客戶Id, 客戶聯絡人.Email))
+                //{
+                //    db.Add(客戶聯絡人);
+                //    db.UnitOfWork.Commit();
+                //    return RedirectToAction("Index");
+                //}
             }
 
             ViewBag.客戶Id = new SelectList(db_old.客戶資料, "Id", "客戶名稱", 客戶聯絡人.客戶Id);

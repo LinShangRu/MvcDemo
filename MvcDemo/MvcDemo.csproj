@@ -171,6 +171,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\客戶聯絡人Controller.cs" />
     <Compile Include="Controllers\客戶資料Controller.cs" />
+    <Compile Include="Controllers\客戶資料統計Controller.cs" />
     <Compile Include="Controllers\客戶銀行資訊Controller.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -206,6 +207,7 @@
     <Compile Include="Models\sysdiagramsRepository.cs">
       <DependentUpon>IRepository.EF6..tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Validations\同一個客戶下的聯絡人電子郵件不可重複Attribute.cs" />
     <Compile Include="Models\Validations\電話格式必須正確Attribute.cs" />
     <Compile Include="Models\客戶聯絡人.cs">
       <DependentUpon>客戶資料.tt</DependentUpon>
@@ -232,13 +234,11 @@
     <Compile Include="Models\客戶資料.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\客戶資料1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>客戶資料.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\客戶資料Repository.cs">
       <DependentUpon>IRepository.EF6..tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\客戶資料統計.cs">
+      <DependentUpon>客戶資料.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\客戶銀行資訊.cs">
       <DependentUpon>客戶資料.tt</DependentUpon>
@@ -331,6 +331,11 @@
     <Content Include="Views\客戶銀行資訊\Details.cshtml" />
     <Content Include="Views\客戶銀行資訊\Edit.cshtml" />
     <Content Include="Views\客戶銀行資訊\Index.cshtml" />
+    <Content Include="Views\客戶資料統計\Create.cshtml" />
+    <Content Include="Views\客戶資料統計\Delete.cshtml" />
+    <Content Include="Views\客戶資料統計\Details.cshtml" />
+    <Content Include="Views\客戶資料統計\Edit.cshtml" />
+    <Content Include="Views\客戶資料統計\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
